@@ -4,5 +4,4 @@ sqlalchemy
 pydantic
 python-dotenv
 openai==0.28
-torch
 nltk
