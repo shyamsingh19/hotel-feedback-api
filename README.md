@@ -1,6 +1,7 @@
 ## Hotel Feedback Summarizer API
 
-API that accepts hotel guest feedback, categorizes it into key themes (like **Cleanliness**, **Service**, etc.), and provides AI-generated summaries per theme
+API that accepts hotel guest feedback, categorizes it into key themes (like **Cleanliness**, **Service**, etc.), and provides AI-generated summaries per theme.
+
 🔗 **Live Demo & Docs:** [https://hotel-feedback-api.onrender.com/docs](https://hotel-feedback-api.onrender.com/docs)
 
 ---
