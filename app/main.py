@@ -21,6 +21,11 @@ def get_db():
         db.close()
 
 
+@router.get("/")
+async def root():
+    return {"status": "up and running"}
+
+
 @app.post("/feedback", response_model=schemas.FeedbackOut)
 def add_feedback(feedback: schemas.FeedbackCreate, db: Session = Depends(get_db)):
     if not feedback.comment.strip():
