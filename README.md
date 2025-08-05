@@ -1,6 +1,7 @@
 ## Hotel Feedback Summarizer API
 
 API that accepts hotel guest feedback, categorizes it into key themes (like **Cleanliness**, **Service**, etc.), and provides AI-generated summaries per theme.
+🔗 **Live Demo & Docs:** [https://hotel-feedback-api.onrender.com/docs](https://hotel-feedback-api.onrender.com/docs)
 
 ---
 
@@ -19,8 +20,7 @@ API that accepts hotel guest feedback, categorizes it into key themes (like **Cl
 ### 1. 📦 Clone & Install
 
 ```bash
-# TODO add real link
-git clone https://github.com/yourusername/hotel-feedback-api.git
+git clone https://github.com/shyamsingh19/hotel-feedback-api
 cd hotel-feedback-api
 python3 -m venv venv
 source venv/bin/activate
@@ -41,24 +41,6 @@ Edit `.env`:
 OPENAI_API_KEY=your-key-here
 ```
 
-> Set `false` to use local models or keyword fallback.
-
-### 3. 🧱 Initialize DB
-
-```bash
-python scripts/init_db.py
-```
-
-Or use SQLite manually:
-
-```sql
-CREATE TABLE feedback (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    guest_id TEXT NOT NULL,
-    comment TEXT NOT NULL
-);
-```
-
 ---
 
 ## 🧪 Sample Requests (Curl)
@@ -66,7 +48,7 @@ CREATE TABLE feedback (
 ###  Add Feedback
 
 ```bash
-curl -X POST http://localhost:8000/feedback \
+curl -X POST https://hotel-feedback-api.onrender.com/feedback \
   -H "Content-Type: application/json" \
   -d '{"guest_id": "GUEST101", "comment": "The food was amazing but the WiFi didn’t work."}'
 ```
@@ -74,13 +56,13 @@ curl -X POST http://localhost:8000/feedback \
 ### 📚 Get Grouped Themes + Summaries
 
 ```bash
-curl http://localhost:8000/feedback/themes
+curl https://hotel-feedback-api.onrender.com/feedback/themes
 ```
 
 ### 📊 Get Stats
 
 ```bash
-curl http://localhost:8000/feedback/stats
+curl https://hotel-feedback-api.onrender.com/feedback/stats
 ```
 
 ---
@@ -135,19 +117,12 @@ Themes supported:
 pytest
 ```
 
-Includes unit tests for:
-
-* Grouping fallback logic
-* Theme-to-comment mapping
-* Summary formatting
-
 ---
 
 ## 🛠 Dev Tools
 
 * `FastAPI` for web app
 * `SQLite` for local storage
-* `transformers` or `sentence-transformers` for local grouping (optional)
 * `OpenAI GPT-3.5` for summarization (if enabled)
 
 ---
