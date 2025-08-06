@@ -5,3 +5,4 @@ pydantic
 python-dotenv
 openai==0.28
 nltk
+requests

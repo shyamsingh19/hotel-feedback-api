@@ -1,17 +1,17 @@
-import os
-import openai
 import re
 import nltk
 from collections import defaultdict
 from typing import Dict, List
-
 from dotenv import load_dotenv
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+from app.summarize import generate_content
+
 
 load_dotenv(override=True)
 
 
 nltk.download("vader_lexicon")
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 sia = SentimentIntensityAnalyzer()
 
@@ -21,7 +21,7 @@ def get_negative_theme_ratio(comments: List[str]) -> Dict[str, float]:
     negative_counts = defaultdict(int)
 
     for comment in comments:
-        theme = group_with_openai(comment)
+        theme = group_with_gemini(comment)
         sentiment = sia.polarity_scores(comment)
 
         theme_counts[theme] += 1
@@ -47,31 +47,27 @@ KEYWORDS = {
 }
 
 
-def group_with_openai(comment: str) -> str:
+def group_with_gemini(comment: str) -> str:
+    print(f"Running group_with_gemini for comment: {comment}")
     prompt = f"""
-You are an AI that categorizes hotel guest comments into one of these themes:
-{", ".join(THEMES)}.
+            You are an AI that categorizes hotel guest comments into one of these themes:
+            {", ".join(THEMES)}.
 
-Comment:
-\"\"\"{comment}\"\"\"
+            Comment:
+            \"\"\"{comment}\"\"\"
 
-Which single theme does this comment fit best?
-Just reply with the theme name.
-"""
+            Which single theme does this comment fit best?
+            Just reply with the theme name exactly.
+        """
     try:
-        openai.api_key = os.getenv("OPENAI_API_KEY")
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
-        )
-        theme = response["choices"][0]["message"]["content"].strip()
+        theme = generate_content(prompt).strip()
         return theme if theme in THEMES else group_with_keywords(comment)
     except Exception:
         return group_with_keywords(comment)
 
 
 def group_with_keywords(comment: str) -> str:
+    print(f"Running group_with_keywords for comment: {comment}")
     comment_lower = comment.lower()
     scores = {theme: 0 for theme in THEMES}
     for theme, keywords in KEYWORDS.items():
@@ -84,6 +80,6 @@ def group_with_keywords(comment: str) -> str:
 def group_feedback_by_theme(comments: list[str]) -> dict[str, list[str]]:
     theme_map = {theme: [] for theme in THEMES}
     for comment in comments:
-        theme = group_with_openai(comment)
+        theme = group_with_gemini(comment)
         theme_map[theme].append(comment)
     return theme_map
