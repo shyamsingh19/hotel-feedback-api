@@ -127,5 +127,4 @@ pytest
 - `Google` Gemini for theme grouping and summarization
 - `SQLite` for local database storage
 - `Render` for cloud deployment
-- 
 ---
