@@ -8,11 +8,12 @@ API that accepts hotel guest feedback, categorizes it into key themes (like **Cl
 
 ##  Features
 
-*  Submit feedback via `POST /feedback`
-*  Group all feedback into 5 hotel themes via `GET /feedback/themes`
-*  Summarize each theme using OpenAI GPT (or fallback if offline)
-*  Stats route (`GET /feedback/stats`) shows most common theme and negativity ratio
-*  Local or OpenAI-based grouping supported
+- `POST /feedback`: Submit guest feedback
+- `GET /feedback/themes`: View grouped feedback with summaries per theme
+- `GET /feedback/stats`: Analyze most discussed and most negative themes
+- Theme grouping powered by **Gemini** or **local keywords**
+- AI summarization with **Gemini**
+- Feedback storage via **SQLite**
 
 ---
 
@@ -39,7 +40,7 @@ cp .env.example .env
 Edit `.env`:
 
 ```env
-OPENAI_API_KEY=your-key-here
+GEMINI_API_KEY=your-google-gemini-api-key
 ```
 
 ---
@@ -70,8 +71,8 @@ curl https://hotel-feedback-api.onrender.com/feedback/stats
 
 ## 🧠 Grouping Logic
 
-* **Primary**: Uses OpenAI (`gpt-3.5-turbo`) to map feedback to a single theme
-* **Fallback**: Keyword-based logic assigns themes if OpenAI is unavailable
+* **Primary**: Uses Gemini (gemini-2.0-flash) to map feedback to a single theme
+* **Fallback**: Keyword-based logic assigns themes if Gemini is unavailable
 
 Themes supported:
 
@@ -87,7 +88,7 @@ Themes supported:
 
 * Feedbacks are grouped by theme
 
-* Each group is summarized using GPT via a prompt like:
+* Each group is summarized using Gemini via a prompt like:
 
   > “Summarize the following guest feedback about **Staff & Service**...”
 
@@ -122,8 +123,9 @@ pytest
 
 ## 🛠 Dev Tools
 
-* `FastAPI` for web app
-* `SQLite` for local storage
-* `OpenAI GPT-3.5` for summarization (if enabled)
-
+- `FastAPI` for building the API backend
+- `Google` Gemini for theme grouping and summarization
+- `SQLite` for local database storage
+- `Render` for cloud deployment
+- 
 ---
